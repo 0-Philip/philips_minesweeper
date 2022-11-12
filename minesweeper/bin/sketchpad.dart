@@ -1,4 +1,5 @@
 import "dart:io";
+import 'package:minesweeper/matrices.dart';
 
 void main() {
   print("hi!");
@@ -7,19 +8,11 @@ void main() {
 
   //testMatrix();
 
-  var matrix = createMatrix(matrixSize);
+  var matrix = createMatrix<String>(matrixSize);
+
+  matrix[2][2] = "@";
 
   printMatrix(matrix);
-}
-
-List<List<String?>> createMatrix(int matrixSize) {
-  List<List<String?>> matrix = [
-    for (var i = 0; i <= matrixSize; i++)
-      [
-        for (var i = 0; i <= matrixSize; i++) null,
-      ],
-  ];
-  return matrix;
 }
 
 void testMatrix() {
