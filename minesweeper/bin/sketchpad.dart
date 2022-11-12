@@ -5,7 +5,21 @@ void main() {
 
   const matrixSize = 9;
 
-  testMatrix();
+  //testMatrix();
+
+  var matrix = createMatrix(matrixSize);
+
+  printMatrix(matrix);
+}
+
+List<List<String?>> createMatrix(int matrixSize) {
+  List<List<String?>> matrix = [
+    for (var i = 0; i <= matrixSize; i++)
+      [
+        for (var i = 0; i <= matrixSize; i++) null,
+      ],
+  ];
+  return matrix;
 }
 
 void testMatrix() {
@@ -15,6 +29,10 @@ void testMatrix() {
     ["😉", null, "🦡", "█"],
   ];
 
+  printMatrix(matrix);
+}
+
+void printMatrix(List<List<String?>> matrix) {
   for (var row in matrix) {
     for (var cell in row) {
       stdout.write(cell ?? "░");
