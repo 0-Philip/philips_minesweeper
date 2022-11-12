@@ -5,6 +5,10 @@ void main() {
 
   const matrixSize = 9;
 
+  testMatrix();
+}
+
+void testMatrix() {
   List<List<String?>> matrix = [
     ["d", null, null, "e"],
     [null, "█", null, "🍅"],
