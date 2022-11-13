@@ -1,7 +1,6 @@
 import 'dart:math';
 
-void scatter<T>(
-    {required List<T> items, required List<List<T?>> throughoutField}) {
+void scatter<T>(List<T> items, {required List<List<T?>> throughoutField}) {
   assert(_isRectangular(throughoutField), "field is not rectangular");
   assert(items.length < (throughoutField[0].length * throughoutField.length),
       "too many items to scatter throughout field");
@@ -24,7 +23,7 @@ void scatter<T>(
   }
 }
 
-int countEmptyCellsinMatrix(List<List<dynamic>> throughoutField) {
+int countEmptyCellsinMatrix<T>(List<List<T?>> throughoutField) {
   var emptySpace = 0;
 
   for (var row in throughoutField) {

@@ -13,13 +13,13 @@ void main() {
 
   var strings = [for (var i = 0; i < 10; i++) "$i"];
 
-  scatter(items: strings, throughoutField: matrix);
+  scatter(strings, throughoutField: matrix);
 
   printMatrix(matrix);
 }
 
 void testMatrix() {
-  List<List<String?>> matrix = [
+  var matrix = [
     ["d", null, null, "e"],
     [null, "█", null, "🍅"],
     ["😉", null, "🦡", "█"],
