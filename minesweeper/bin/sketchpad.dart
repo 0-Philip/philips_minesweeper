@@ -5,13 +5,13 @@ import 'package:minesweeper/scatter_throughout.dart';
 void main() {
   print("hi!");
 
-  const matrixSize = 3;
+  const matrixSize = 9;
 
   //testMatrix();
 
   var matrix = createMatrix<String>(matrixSize);
 
-  var strings = [for (var i = 0; i < 5; i++) "$i"];
+  var strings = [for (var i = 0; i < 10; i++) "$i"];
 
   scatter(items: strings, throughoutField: matrix);
 
