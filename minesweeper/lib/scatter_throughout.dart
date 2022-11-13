@@ -18,15 +18,13 @@ void scatter<T>(List<T> items, {required List<List<T?>> throughoutField}) {
       yCoordinate = random.nextInt(yOuterBound);
       xCoordinate = random.nextInt(xOuterBound);
     }
-
     throughoutField[yCoordinate][xCoordinate] = item;
   }
 }
 
-int countEmptyCellsinMatrix<T>(List<List<T?>> throughoutField) {
+int countEmptyCellsinMatrix<T>(List<List<T?>> matrix) {
   var emptySpace = 0;
-
-  for (var row in throughoutField) {
+  for (var row in matrix) {
     emptySpace += row.where((element) => element == null).length;
   }
   return emptySpace;
