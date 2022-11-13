@@ -1,16 +1,19 @@
 import "dart:io";
 import 'package:minesweeper/matrices.dart';
+import 'package:minesweeper/scatter_throughout.dart';
 
 void main() {
   print("hi!");
 
-  const matrixSize = 9;
+  const matrixSize = 3;
 
   //testMatrix();
 
   var matrix = createMatrix<String>(matrixSize);
 
-  matrix[2][2] = "@";
+  var strings = [for (var i = 0; i < 5; i++) "$i"];
+
+  scatter(items: strings, throughoutField: matrix);
 
   printMatrix(matrix);
 }
