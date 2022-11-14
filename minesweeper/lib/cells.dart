@@ -1,12 +1,12 @@
 class Position {
-  final int _x;
-  final int _y;
-  Position(this._x, this._y);
+  int x = 0;
+  int y = 0;
+  Position(this.x, this.y);
 }
 
 abstract class CellBase {
-  final Position _position;
-  CellBase(int x, int y) : _position = Position(x, y) {}
+  Position position;
+  CellBase(int x, int y) : position = Position(x, y);
 }
 
 class Mine extends CellBase {
