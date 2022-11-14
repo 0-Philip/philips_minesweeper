@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:minesweeper/cells.dart';
+
 void scatter<T>(List<T> items, {required List<List<T?>> throughoutField}) {
   assert(_isRectangular(throughoutField), "field is not rectangular");
   assert(items.length < (throughoutField[0].length * throughoutField.length),
@@ -19,6 +21,12 @@ void scatter<T>(List<T> items, {required List<List<T?>> throughoutField}) {
       xCoordinate = random.nextInt(xOuterBound);
     }
     throughoutField[yCoordinate][xCoordinate] = item;
+
+    if (item is Mine) {
+      item.position
+        ..x = xCoordinate
+        ..y = yCoordinate;
+    }
   }
 }
 
