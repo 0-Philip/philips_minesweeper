@@ -14,7 +14,8 @@ class Mine extends CellBase {
   Mine(super.x, super.y);
   @override
   void increment() {
-    // do nothing
+    // Leaving increment() unimplemented for Mine instances allows them to be
+    // 'skipped over' when the neighbouring values are being determined
   }
 }
 
