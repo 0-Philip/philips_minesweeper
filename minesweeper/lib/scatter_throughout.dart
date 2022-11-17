@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:minesweeper/cells.dart';
 
 void scatter<T>(List<T> items, {required List<List<T?>> throughoutField}) {
-  assert(_isRectangular(throughoutField), "field is not rectangular");
+  assert(isRectangular(throughoutField), "field is not rectangular");
   assert(items.length < (throughoutField[0].length * throughoutField.length),
       "too many items to scatter throughout field");
   assert(items.length <= countEmptyCellsinMatrix(throughoutField),
@@ -38,7 +38,7 @@ int countEmptyCellsinMatrix<T>(List<List<T?>> matrix) {
   return emptySpace;
 }
 
-bool _isRectangular<T>(List<List<T>> listOfLists) {
+bool isRectangular<T>(List<List<T>> listOfLists) {
   for (int i = 1; i < listOfLists.length; i++) {
     if (listOfLists[i].length != listOfLists[i - 1].length) {
       return false;
@@ -49,7 +49,7 @@ bool _isRectangular<T>(List<List<T>> listOfLists) {
 
 List<Mine> createAndScatterMines(
     {required int count, required List<List<CellBase?>> throughoutField}) {
-  assert(_isRectangular(throughoutField), "field is not rectangular");
+  assert(isRectangular(throughoutField), "field is not rectangular");
   assert(count < (throughoutField[0].length * throughoutField.length),
       "too many items to scatter throughout field");
   assert(count <= countEmptyCellsinMatrix(throughoutField),
@@ -66,7 +66,7 @@ List<Mine> createAndScatterMines(
       yCoordinate = random.nextInt(yOuterBound);
       xCoordinate = random.nextInt(xOuterBound);
     }
-    var newMine = Mine(xCoordinate, yCoordinate);
+    var newMine = Mine(xCoordinate, yCoordinate, inField: throughoutField);
     throughoutField[newMine.position.y][newMine.position.x] = newMine;
     mines.add(newMine);
   }

@@ -3,13 +3,12 @@ import 'dart:io';
 import 'package:minesweeper/cells.dart';
 import 'package:minesweeper/matrices.dart';
 
-var mines = [
-  Mine(2, 1),
-  Mine(1, 3),
-  Mine(3, 3),
-];
-
 var minefield = createMatrix<CellBase>(4);
+var mines = [
+  Mine(2, 1, inField: minefield),
+  Mine(1, 3, inField: minefield),
+  Mine(3, 3, inField: minefield),
+];
 
 var xOuterBound = 4;
 var yOuterBound = 4;

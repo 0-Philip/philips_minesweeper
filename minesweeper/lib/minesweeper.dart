@@ -8,10 +8,17 @@ int calculate() {
 }
 
 class Minesweeper {
-  Minesweeper({int fieldSize = 9, int mineCount = 10})
-      : minefield = createMatrix<CellBase>(fieldSize),
-        mines = [for (var i = 0; i < mineCount; i++) Mine(0, 0)],
-        xOuterBound = fieldSize,
+  factory Minesweeper({int fieldSize = 9, int mineCount = 10}) {
+    var minefield = createMatrix<CellBase>(fieldSize);
+    var mines = [
+      for (var i = 0; i < mineCount; i++)
+        Mine.scattered(throughoutField: minefield)
+    ];
+    return Minesweeper._(fieldSize, minefield, mines);
+  }
+
+  Minesweeper._(int fieldSize, this.minefield, this.mines)
+      : xOuterBound = fieldSize,
         yOuterBound = fieldSize;
 
   List<List<CellBase?>> minefield;
@@ -19,7 +26,7 @@ class Minesweeper {
   final int xOuterBound;
   final int yOuterBound;
 
-  void initialize() {
+  void initializeWithScatter() {
     scatter(mines, throughoutField: minefield);
     addNeighbours();
     printMineswithDebug();
@@ -30,6 +37,11 @@ class Minesweeper {
     addNeighbours();
     printMineswithDebug();
     print("There are ${mines.length} mines");
+  }
+
+  void initialize() {
+    addNeighbours();
+    printMineswithDebug();
   }
 
   void addNeighbours() {
