@@ -25,6 +25,13 @@ class Minesweeper {
     printMineswithDebug();
   }
 
+  void initializeByCount(int count) {
+    mines = createAndScatterMines(count: count, throughoutField: minefield);
+    addNeighbours();
+    printMineswithDebug();
+    print("There are ${mines.length} mines");
+  }
+
   void addNeighbours() {
     for (var mine in mines) {
       var xStart = mine.position.x;

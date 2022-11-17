@@ -46,3 +46,29 @@ bool _isRectangular<T>(List<List<T>> listOfLists) {
   }
   return true;
 }
+
+List<Mine> createAndScatterMines(
+    {required int count, required List<List<CellBase?>> throughoutField}) {
+  assert(_isRectangular(throughoutField), "field is not rectangular");
+  assert(count < (throughoutField[0].length * throughoutField.length),
+      "too many items to scatter throughout field");
+  assert(count <= countEmptyCellsinMatrix(throughoutField),
+      "not enough empty cells");
+  var mines = List<Mine>.empty(growable: true);
+  var random = Random();
+  final xOuterBound = throughoutField[0].length;
+  final yOuterBound = throughoutField.length;
+  for (var i = 0; i < count; i++) {
+    var yCoordinate = random.nextInt(yOuterBound);
+    var xCoordinate = random.nextInt(xOuterBound);
+    while (throughoutField[yCoordinate][xCoordinate] != null) {
+      print("had to try a different location");
+      yCoordinate = random.nextInt(yOuterBound);
+      xCoordinate = random.nextInt(xOuterBound);
+    }
+    var newMine = Mine(xCoordinate, yCoordinate);
+    throughoutField[newMine.position.y][newMine.position.x] = newMine;
+    mines.add(newMine);
+  }
+  return mines;
+}
