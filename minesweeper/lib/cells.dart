@@ -20,7 +20,7 @@ class Mine extends CellBase {
     inField[position.y][position.x] = this; //TODO bring into superclass
   }
 
-  factory Mine.scattered({required throughoutField}) {
+  factory Mine.scattered({required List<List<CellBase?>> throughoutField}) {
     assertMinefieldSuitability(throughoutField);
     var random = Random();
     final outerBounds =
@@ -35,12 +35,13 @@ class Mine extends CellBase {
   static Position newRandomPosition(Random random, Position outerBounds) =>
       Position(random.nextInt(outerBounds.x), random.nextInt(outerBounds.y));
 
-  static bool isOccupied(throughoutField, Position mineDestination) =>
+  static bool isOccupied(
+          List<List<CellBase?>> throughoutField, Position mineDestination) =>
       throughoutField[mineDestination.y][mineDestination.x] != null;
 
-  static void assertMinefieldSuitability(throughoutField) {
+  static void assertMinefieldSuitability(
+      List<List<CellBase?>> throughoutField) {
     assert(isRectangular(throughoutField), "field is not rectangular");
-
     assert(1 <= countEmptyCellsinMatrix(throughoutField),
         "not enough empty cells");
   }
