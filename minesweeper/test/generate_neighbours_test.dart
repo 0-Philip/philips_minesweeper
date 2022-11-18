@@ -23,7 +23,7 @@ void addNeighbours() {
         for (var j = yStart - 1; j <= yStart + 1; j++) {
           if ((j < yOuterBound) && (j >= 0)) {
             if (minefield[j][i] == null) {
-              minefield[j][i] = NumberedCell(i, j);
+              //     minefield[j][i] = NumberedCell(i, j);
             } else {
               minefield[j][i]!.increment();
             }

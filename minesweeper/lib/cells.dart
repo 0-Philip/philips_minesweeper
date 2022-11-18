@@ -10,15 +10,31 @@ class Position {
 
 abstract class CellBase {
   final Position position;
-  CellBase(int x, int y) : position = Position(x, y);
+  List<List<CellBase?>> inField;
+  CellBase(int x, int y, {required this.inField}) : position = Position(x, y) {
+    inField[position.y][position.x] = this;
+  }
   void increment();
+  void forEachSurrounding(Function function) {
+    final xStart = position.x;
+    final yStart = position.y;
+
+    var outerbounds = _determineOuterbounds(inField);
+
+    for (var i = xStart - 1; i <= xStart + 1; i++) {
+      if ((i < outerbounds.x) && (i >= 0)) {
+        for (var j = yStart - 1; j <= yStart + 1; j++) {
+          if ((j < outerbounds.y) && (j >= 0)) {
+            function(j, i);
+          }
+        }
+      }
+    }
+  }
 }
 
 class Mine extends CellBase {
-  List<List<CellBase?>> inField;
-  Mine(super.x, super.y, {required this.inField}) {
-    inField[position.y][position.x] = this; //TODO bring into superclass
-  }
+  Mine(super.x, super.y, {required super.inField});
 
   factory Mine.scattered({required List<List<CellBase?>> throughoutField}) {
     final outerBounds = _determineOuterbounds(throughoutField);
@@ -30,24 +46,12 @@ class Mine extends CellBase {
     return Mine(mineDestination.x, mineDestination.y, inField: throughoutField);
   }
 
-  static Position _determineOuterbounds(List<List<CellBase?>> throughoutField) {
-    _assertMinefieldSuitability(throughoutField);
-    return Position(throughoutField[0].length, throughoutField.length);
-  }
-
   static Position _newRandomPosition(Random random, Position outerBounds) =>
       Position(random.nextInt(outerBounds.x), random.nextInt(outerBounds.y));
 
   static bool _isOccupied(
           List<List<CellBase?>> throughoutField, Position mineDestination) =>
       throughoutField[mineDestination.y][mineDestination.x] != null;
-
-  static void _assertMinefieldSuitability(
-      List<List<CellBase?>> throughoutField) {
-    assert(isRectangular(throughoutField), "field is not rectangular");
-    assert(1 <= countEmptyCellsinMatrix(throughoutField),
-        "not enough empty cells");
-  }
 
   @override
   void increment() {
@@ -58,7 +62,8 @@ class Mine extends CellBase {
 
 class NumberedCell extends CellBase {
   int adjacentMineCount;
-  NumberedCell(super.x, super.y) : adjacentMineCount = 1;
+  NumberedCell(super.x, super.y, {required super.inField})
+      : adjacentMineCount = 1;
 
   @override
   void increment() {
@@ -67,10 +72,21 @@ class NumberedCell extends CellBase {
 }
 
 class EmptyCell extends CellBase {
-  EmptyCell(super.x, super.y);
+  EmptyCell(super.x, super.y, {required super.inField});
 
   @override
   void increment() {
     assert(false, "empty cells should not be incremented");
   }
+}
+
+Position _determineOuterbounds(List<List<CellBase?>> throughoutField) {
+  _assertMinefieldSuitability(throughoutField);
+  return Position(throughoutField[0].length, throughoutField.length);
+}
+
+void _assertMinefieldSuitability(List<List<CellBase?>> throughoutField) {
+  assert(isRectangular(throughoutField), "field is not rectangular");
+  assert(
+      1 <= countEmptyCellsinMatrix(throughoutField), "not enough empty cells");
 }

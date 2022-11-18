@@ -40,7 +40,7 @@ class Minesweeper {
   }
 
   void initialize() {
-    addNeighbours();
+    addNeighbours2();
     printMineswithDebug();
   }
 
@@ -54,7 +54,7 @@ class Minesweeper {
           for (var j = yStart - 1; j <= yStart + 1; j++) {
             if ((j < yOuterBound) && (j >= 0)) {
               if (minefield[j][i] == null) {
-                minefield[j][i] = NumberedCell(i, j);
+                NumberedCell(i, j, inField: minefield);
               } else {
                 minefield[j][i]!.increment();
               }
@@ -67,7 +67,7 @@ class Minesweeper {
 
   void addNeighbours2() {
     for (var mine in mines) {
-      forEachSurrounding(mine, placeNumberAccordingly);
+      mine.forEachSurrounding(placeNumberAccordingly);
     }
   }
 
@@ -87,7 +87,7 @@ class Minesweeper {
 
   void placeNumberAccordingly(int j, int i) {
     if (minefield[j][i] == null) {
-      minefield[j][i] = NumberedCell(i, j);
+      minefield[j][i] = NumberedCell(i, j, inField: minefield);
     } else {
       minefield[j][i]!.increment();
     }
