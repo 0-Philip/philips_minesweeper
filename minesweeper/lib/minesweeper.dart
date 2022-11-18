@@ -65,6 +65,50 @@ class Minesweeper {
     }
   }
 
+  void addNeighbours2() {
+    for (var mine in mines) {
+      forEachSurrounding(mine, placeNumberAccordingly);
+    }
+  }
+
+  void forEachSurrounding(CellBase cell, Function function) {
+    int xStart = cell.position.x;
+    int yStart = cell.position.y;
+    for (var i = xStart - 1; i <= xStart + 1; i++) {
+      if ((i < xOuterBound) && (i >= 0)) {
+        for (var j = yStart - 1; j <= yStart + 1; j++) {
+          if ((j < yOuterBound) && (j >= 0)) {
+            function(j, i);
+          }
+        }
+      }
+    }
+  }
+
+  void placeNumberAccordingly(int j, int i) {
+    if (minefield[j][i] == null) {
+      minefield[j][i] = NumberedCell(i, j);
+    } else {
+      minefield[j][i]!.increment();
+    }
+  }
+
+  void forEachAdjacent(int coordinate, int outerbound, Function function) =>
+      () {
+        for (var i = coordinate - 1; i <= coordinate + 1; i++) {
+          if ((i < outerbound) && (i >= 0)) {
+            function();
+          }
+        }
+      };
+
+  void forEachAdjacentCell(
+      Position location, Position outerbounds, Function function) {
+    forEachAdjacent(location.x, outerbounds.x, () {
+      forEachAdjacent(location.y, outerbounds.y, function);
+    });
+  }
+
   void printMineswithDebug() {
     for (var row in minefield) {
       for (var cell in row) {
