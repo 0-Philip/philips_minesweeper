@@ -9,34 +9,40 @@ class Position {
 }
 
 abstract class CellBase {
-  Position position;
+  final Position position;
   CellBase(int x, int y) : position = Position(x, y);
   void increment();
 }
 
 class Mine extends CellBase {
   List<List<CellBase?>> inField;
-  Mine(super.x, super.y, {required this.inField});
+  Mine(super.x, super.y, {required this.inField}) {
+    inField[position.y][position.x] = this;
+  }
 
   factory Mine.scattered({required throughoutField}) {
+    assertMinefieldSuitability(throughoutField);
+    var random = Random();
+    final outerBounds =
+        Position(throughoutField[0].length, throughoutField.length);
+    var mineDestination = newRandomPosition(random, outerBounds);
+    while (isOccupied(throughoutField, mineDestination)) {
+      mineDestination = newRandomPosition(random, outerBounds);
+    }
+    return Mine(mineDestination.x, mineDestination.y, inField: throughoutField);
+  }
+
+  static Position newRandomPosition(Random random, Position outerBounds) =>
+      Position(random.nextInt(outerBounds.x), random.nextInt(outerBounds.y));
+
+  static bool isOccupied(throughoutField, Position mineDestination) =>
+      throughoutField[mineDestination.y][mineDestination.x] != null;
+
+  static void assertMinefieldSuitability(throughoutField) {
     assert(isRectangular(throughoutField), "field is not rectangular");
 
     assert(1 <= countEmptyCellsinMatrix(throughoutField),
         "not enough empty cells");
-    var random = Random();
-    final xOuterBound = throughoutField[0].length;
-    final yOuterBound = throughoutField.length;
-    var yCoordinate = random.nextInt(yOuterBound);
-    var xCoordinate = random.nextInt(xOuterBound);
-    while (throughoutField[yCoordinate][xCoordinate] != null) {
-      print("had to try a different location");
-      yCoordinate = random.nextInt(yOuterBound);
-      xCoordinate = random.nextInt(xOuterBound);
-    }
-    var newMine = Mine(xCoordinate, yCoordinate, inField: throughoutField);
-    throughoutField[newMine.position.y][newMine.position.x] = newMine;
-
-    return newMine;
   }
 
   @override
