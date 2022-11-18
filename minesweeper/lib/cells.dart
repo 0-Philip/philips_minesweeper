@@ -17,7 +17,7 @@ abstract class CellBase {
 class Mine extends CellBase {
   List<List<CellBase?>> inField;
   Mine(super.x, super.y, {required this.inField}) {
-    inField[position.y][position.x] = this;
+    inField[position.y][position.x] = this; //TODO bring into superclass
   }
 
   factory Mine.scattered({required throughoutField}) {
