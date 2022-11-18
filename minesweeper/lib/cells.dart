@@ -16,14 +16,10 @@ abstract class CellBase {
   }
   void increment();
   void forEachSurrounding(Function function) {
-    final xStart = position.x;
-    final yStart = position.y;
-
     var outerbounds = _determineOuterbounds(inField);
-
-    for (var i = xStart - 1; i <= xStart + 1; i++) {
+    for (var i = position.x - 1; i <= position.x + 1; i++) {
       if ((i < outerbounds.x) && (i >= 0)) {
-        for (var j = yStart - 1; j <= yStart + 1; j++) {
+        for (var j = position.y - 1; j <= position.y + 1; j++) {
           if ((j < outerbounds.y) && (j >= 0)) {
             function(j, i);
           }
