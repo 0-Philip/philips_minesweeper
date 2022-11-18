@@ -21,25 +21,28 @@ class Mine extends CellBase {
   }
 
   factory Mine.scattered({required List<List<CellBase?>> throughoutField}) {
-    assertMinefieldSuitability(throughoutField);
+    final outerBounds = _determineOuterbounds(throughoutField);
     var random = Random();
-    final outerBounds =
-        Position(throughoutField[0].length, throughoutField.length);
-    var mineDestination = newRandomPosition(random, outerBounds);
-    while (isOccupied(throughoutField, mineDestination)) {
-      mineDestination = newRandomPosition(random, outerBounds);
+    var mineDestination = _newRandomPosition(random, outerBounds);
+    while (_isOccupied(throughoutField, mineDestination)) {
+      mineDestination = _newRandomPosition(random, outerBounds);
     }
     return Mine(mineDestination.x, mineDestination.y, inField: throughoutField);
   }
 
-  static Position newRandomPosition(Random random, Position outerBounds) =>
+  static Position _determineOuterbounds(List<List<CellBase?>> throughoutField) {
+    _assertMinefieldSuitability(throughoutField);
+    return Position(throughoutField[0].length, throughoutField.length);
+  }
+
+  static Position _newRandomPosition(Random random, Position outerBounds) =>
       Position(random.nextInt(outerBounds.x), random.nextInt(outerBounds.y));
 
-  static bool isOccupied(
+  static bool _isOccupied(
           List<List<CellBase?>> throughoutField, Position mineDestination) =>
       throughoutField[mineDestination.y][mineDestination.x] != null;
 
-  static void assertMinefieldSuitability(
+  static void _assertMinefieldSuitability(
       List<List<CellBase?>> throughoutField) {
     assert(isRectangular(throughoutField), "field is not rectangular");
     assert(1 <= countEmptyCellsinMatrix(throughoutField),
