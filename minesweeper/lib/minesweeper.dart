@@ -28,37 +28,13 @@ class Minesweeper {
 
   void addNeighbours2() {
     for (var mine in mines) {
-      mine.forEachSurrounding(placeNumberAccordingly2);
+      mine.forEachSurrounding(placeNumberAccordingly);
     }
   }
 
   void placeNumberAccordingly(int j, int i) {
-    if (minefield[j][i] == null) {
-      minefield[j][i] = NumberedCell(i, j, inField: minefield);
-    } else {
-      minefield[j][i]!.increment();
-    }
-  }
-
-  void placeNumberAccordingly2(int j, int i) {
     if (minefield[j][i] is NumberedCell) minefield[j][i]!.increment();
     minefield[j][i] ??= NumberedCell(i, j, inField: minefield);
-  }
-
-  void forEachAdjacent(int coordinate, int outerbound, Function function) =>
-      () {
-        for (var i = coordinate - 1; i <= coordinate + 1; i++) {
-          if ((i < outerbound) && (i >= 0)) {
-            function();
-          }
-        }
-      };
-
-  void forEachAdjacentCell(
-      Position location, Position outerbounds, Function function) {
-    forEachAdjacent(location.x, outerbounds.x, () {
-      forEachAdjacent(location.y, outerbounds.y, function);
-    });
   }
 
   void printMineswithDebug() {
