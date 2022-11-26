@@ -1,11 +1,6 @@
 import 'package:minesweeper/cells.dart';
 import 'dart:io';
 import 'package:minesweeper/matrices.dart';
-import 'package:minesweeper/scatter_throughout.dart';
-
-int calculate() {
-  return 6 * 7;
-}
 
 class Minesweeper {
   factory Minesweeper({int fieldSize = 9, int mineCount = 10}) {
@@ -26,62 +21,14 @@ class Minesweeper {
   final int xOuterBound;
   final int yOuterBound;
 
-  void initializeWithScatter() {
-    scatter(mines, throughoutField: minefield);
-    addNeighbours();
-    printMineswithDebug();
-  }
-
-  void initializeByCount(int count) {
-    mines = createAndScatterMines(count: count, throughoutField: minefield);
-    addNeighbours();
-    printMineswithDebug();
-    print("There are ${mines.length} mines");
-  }
-
   void initialize() {
     addNeighbours2();
     printMineswithDebug();
   }
 
-  void addNeighbours() {
-    for (var mine in mines) {
-      var xStart = mine.position.x;
-      var yStart = mine.position.y;
-
-      for (var i = xStart - 1; i <= xStart + 1; i++) {
-        if ((i < xOuterBound) && (i >= 0)) {
-          for (var j = yStart - 1; j <= yStart + 1; j++) {
-            if ((j < yOuterBound) && (j >= 0)) {
-              if (minefield[j][i] == null) {
-                NumberedCell(i, j, inField: minefield);
-              } else {
-                minefield[j][i]!.increment();
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   void addNeighbours2() {
     for (var mine in mines) {
-      mine.forEachSurrounding(placeNumberAccordingly);
-    }
-  }
-
-  void forEachSurrounding(CellBase cell, Function function) {
-    int xStart = cell.position.x;
-    int yStart = cell.position.y;
-    for (var i = xStart - 1; i <= xStart + 1; i++) {
-      if ((i < xOuterBound) && (i >= 0)) {
-        for (var j = yStart - 1; j <= yStart + 1; j++) {
-          if ((j < yOuterBound) && (j >= 0)) {
-            function(j, i);
-          }
-        }
-      }
+      mine.forEachSurrounding(placeNumberAccordingly2);
     }
   }
 
@@ -91,6 +38,11 @@ class Minesweeper {
     } else {
       minefield[j][i]!.increment();
     }
+  }
+
+  void placeNumberAccordingly2(int j, int i) {
+    if (minefield[j][i] is NumberedCell) minefield[j][i]!.increment();
+    minefield[j][i] ??= NumberedCell(i, j, inField: minefield);
   }
 
   void forEachAdjacent(int coordinate, int outerbound, Function function) =>
