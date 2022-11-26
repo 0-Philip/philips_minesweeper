@@ -15,7 +15,7 @@ abstract class CellBase {
     inField[position.y][position.x] = this;
   }
   void increment();
-  void forEachSurrounding(Function function) {
+  void forEachSurrounding(Function(int, int) function) {
     var outerbounds = _determineOuterbounds(inField);
     for (var i = position.x - 1; i <= position.x + 1; i++) {
       if ((i < outerbounds.x) && (i >= 0)) {
