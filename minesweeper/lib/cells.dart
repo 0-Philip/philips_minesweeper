@@ -21,7 +21,7 @@ abstract class CellBase {
       if ((i < outerbounds.x) && (i >= 0)) {
         for (var j = position.y - 1; j <= position.y + 1; j++) {
           if ((j < outerbounds.y) && (j >= 0)) {
-            function(j, i);
+            function(i, j);
           }
         }
       }

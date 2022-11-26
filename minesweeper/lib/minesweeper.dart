@@ -33,9 +33,9 @@ class Minesweeper {
     }
   }
 
-  void placeNumberAccordingly(int j, int i) {
-    if (minefield[j][i] is NumberedCell) minefield[j][i]!.increment();
-    minefield[j][i] ??= NumberedCell(i, j, inField: minefield);
+  void placeNumberAccordingly(int x, int y) {
+    if (minefield[y][x] is NumberedCell) minefield[y][x]!.increment();
+    minefield[y][x] ??= NumberedCell(x, y, inField: minefield);
   }
 
   void populateEmptyCells() {
