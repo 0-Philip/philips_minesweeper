@@ -16,17 +16,18 @@ class Minesweeper {
       : xOuterBound = fieldSize,
         yOuterBound = fieldSize;
 
-  List<List<CellBase?>> minefield;
+  Matrix<CellBase?> minefield;
   List<Mine> mines;
   final int xOuterBound;
   final int yOuterBound;
 
   void initialize() {
-    addNeighbours2();
+    addNeighbours();
+    populateEmptyCells();
     printMineswithDebug();
   }
 
-  void addNeighbours2() {
+  void addNeighbours() {
     for (var mine in mines) {
       mine.forEachSurrounding(placeNumberAccordingly);
     }
@@ -37,13 +38,21 @@ class Minesweeper {
     minefield[j][i] ??= NumberedCell(i, j, inField: minefield);
   }
 
+  void populateEmptyCells() {
+    forEachInMatrix(minefield, (x, y) {
+      minefield[y][x] ??= EmptyCell(x, y, inField: minefield);
+    });
+  }
+
   void printMineswithDebug() {
     for (var row in minefield) {
       for (var cell in row) {
         if (cell is NumberedCell) {
           stdout.write(cell.adjacentMineCount);
+        } else if (cell is EmptyCell) {
+          stdout.write("░");
         } else {
-          stdout.write(cell == null ? "░" : "@");
+          stdout.write(cell == null ? "." : "@");
         }
       }
       stdout.writeln('');
@@ -51,6 +60,14 @@ class Minesweeper {
 
     for (var mine in mines) {
       print("My coordinates are ${mine.position.x},${mine.position.y}");
+    }
+  }
+}
+
+void forEachInMatrix<T>(Matrix<T> matrix, Function(int i, int j) function) {
+  for (int i = 0; i < (matrix.length); i++) {
+    for (int j = 0; j < (matrix[i].length); j++) {
+      function(i, j);
     }
   }
 }
