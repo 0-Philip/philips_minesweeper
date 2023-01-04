@@ -16,8 +16,11 @@ abstract class CellBase {
   CellBase(int x, int y, {required this.inField}) : position = Position(x, y) {
     inField[position.y][position.x] = this;
   }
+
   void increment();
+
   void uncover();
+
   void forEachSurrounding(void Function(int, int) function) {
     var outerbounds = _determineOuterbounds(inField);
     for (var i = position.x - 1; i <= position.x + 1; i++) {
@@ -47,6 +50,7 @@ class Mine extends CellBase {
   }
 
   @override
+  // ignore: no-empty-block
   void increment() {
     // Leaving increment() unimplemented for Mine instances allows them to be
     // 'skipped over' when the neighbouring values are being determined
@@ -115,6 +119,7 @@ void _assertMinefieldSuitability(List<List<CellBase?>> throughoutField) {
 
 int countEmptyCellsinMatrix<T>(List<List<T?>> matrix) {
   var emptySpace = 0;
+
   for (var row in matrix) {
     emptySpace += row.where((element) => element == null).length;
   }

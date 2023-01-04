@@ -43,7 +43,7 @@ dart_code_metrics:
     - avoid-late-keyword
     - avoid-missing-enum-constant-in-map
     - avoid-nested-conditional-expressions
-    - avoid-non-ascii-symbols
+    # - avoid-non-ascii-symbols
     - avoid-non-null-assertion
     - avoid-passing-async-when-sync-expected
     - avoid-redundant-async
@@ -58,7 +58,7 @@ dart_code_metrics:
     - format-comment
     - member-ordering
     - no-equal-arguments
-    - no-magic-number
+    # - no-magic-number
     - newline-before-return
     - no-boolean-literal-compare
     - no-empty-block
