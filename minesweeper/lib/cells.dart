@@ -10,11 +10,16 @@ class Position {
 
 abstract class CellBase {
   final Position position;
+  bool isFlagged = false;
+  bool _isCovered = true;
+  get isCovered => _isCovered;
+
   List<List<CellBase?>> inField;
   CellBase(int x, int y, {required this.inField}) : position = Position(x, y) {
     inField[position.y][position.x] = this;
   }
   void increment();
+  void uncover();
   void forEachSurrounding(Function(int, int) function) {
     var outerbounds = _determineOuterbounds(inField);
     for (var i = position.x - 1; i <= position.x + 1; i++) {
@@ -54,6 +59,12 @@ class Mine extends CellBase {
     // Leaving increment() unimplemented for Mine instances allows them to be
     // 'skipped over' when the neighbouring values are being determined
   }
+
+  @override
+  void uncover() {
+    // TODO: boom!!!
+    _isCovered = false;
+  }
 }
 
 class NumberedCell extends CellBase {
@@ -65,6 +76,11 @@ class NumberedCell extends CellBase {
   void increment() {
     adjacentMineCount++;
   }
+
+  @override
+  void uncover() {
+    _isCovered = false;
+  }
 }
 
 class EmptyCell extends CellBase {
@@ -73,6 +89,14 @@ class EmptyCell extends CellBase {
   @override
   void increment() {
     assert(false, "empty cells should not be incremented");
+  }
+
+  @override
+  void uncover() {
+    forEachSurrounding((int x, int y) {
+      var cell = inField[y][x];
+      if (cell?.isCovered) cell?.uncover();
+    });
   }
 }
 
