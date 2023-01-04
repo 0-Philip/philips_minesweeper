@@ -23,6 +23,7 @@ abstract class CellBase {
 
   void forEachSurrounding(void Function(int, int) function) {
     var outerbounds = _determineOuterbounds(inField);
+
     for (var i = position.x - 1; i <= position.x + 1; i++) {
       if ((i < outerbounds.x) && (i >= 0)) {
         for (var j = position.y - 1; j <= position.y + 1; j++) {
@@ -42,6 +43,7 @@ class Mine extends CellBase {
     final outerBounds = _determineOuterbounds(throughoutField);
     var random = Random();
     var mineDestination = _newRandomPosition(random, outerBounds);
+
     while (_isOccupied(throughoutField, mineDestination)) {
       mineDestination = _newRandomPosition(random, outerBounds);
     }
@@ -62,14 +64,19 @@ class Mine extends CellBase {
     _isCovered = false;
   }
 
-  static Position _newRandomPosition(Random random, Position outerBounds) =>
-      Position(random.nextInt(outerBounds.x), random.nextInt(outerBounds.y));
+  static Position _newRandomPosition(Random random, Position outerBounds) {
+    return Position(
+      random.nextInt(outerBounds.x),
+      random.nextInt(outerBounds.y),
+    );
+  }
 
   static bool _isOccupied(
     List<List<CellBase?>> throughoutField,
     Position mineDestination,
-  ) =>
-      throughoutField[mineDestination.y][mineDestination.x] != null;
+  ) {
+    return throughoutField[mineDestination.y][mineDestination.x] != null;
+  }
 }
 
 class NumberedCell extends CellBase {
