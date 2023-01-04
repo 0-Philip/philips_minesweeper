@@ -3,23 +3,24 @@ import 'dart:io';
 import 'package:minesweeper/matrices.dart';
 
 class Minesweeper {
+  Matrix<CellBase?> minefield;
+  List<Mine> mines;
+  final int xOuterBound;
+  final int yOuterBound;
+
   factory Minesweeper({int fieldSize = 9, int mineCount = 10}) {
     var minefield = createMatrix<CellBase>(fieldSize);
     var mines = [
       for (var i = 0; i < mineCount; i++)
-        Mine.scattered(throughoutField: minefield)
+        Mine.scattered(throughoutField: minefield),
     ];
+
     return Minesweeper._(fieldSize, minefield, mines);
   }
 
   Minesweeper._(int fieldSize, this.minefield, this.mines)
       : xOuterBound = fieldSize,
         yOuterBound = fieldSize;
-
-  Matrix<CellBase?> minefield;
-  List<Mine> mines;
-  final int xOuterBound;
-  final int yOuterBound;
 
   void initialize() {
     addNeighbours();
@@ -34,7 +35,7 @@ class Minesweeper {
   }
 
   void placeNumberAccordingly(int x, int y) {
-    if (minefield[y][x] is NumberedCell) minefield[y][x]!.increment();
+    if (minefield[y][x] is NumberedCell) minefield[y][x]?.increment();
     minefield[y][x] ??= NumberedCell(x, y, inField: minefield);
   }
 
@@ -64,7 +65,10 @@ class Minesweeper {
   }
 }
 
-void forEachInMatrix<T>(Matrix<T> matrix, Function(int i, int j) function) {
+void forEachInMatrix<T>(
+  Matrix<T> matrix,
+  void Function(int i, int j) function,
+) {
   for (int i = 0; i < (matrix.length); i++) {
     for (int j = 0; j < (matrix[i].length); j++) {
       function(i, j);

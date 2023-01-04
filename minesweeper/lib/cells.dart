@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:minesweeper/scatter_throughout.dart';
-
 class Position {
   int x = 0;
   int y = 0;
@@ -11,16 +9,16 @@ class Position {
 abstract class CellBase {
   final Position position;
   bool isFlagged = false;
+  List<List<CellBase?>> inField;
   bool _isCovered = true;
   get isCovered => _isCovered;
 
-  List<List<CellBase?>> inField;
   CellBase(int x, int y, {required this.inField}) : position = Position(x, y) {
     inField[position.y][position.x] = this;
   }
   void increment();
   void uncover();
-  void forEachSurrounding(Function(int, int) function) {
+  void forEachSurrounding(void Function(int, int) function) {
     var outerbounds = _determineOuterbounds(inField);
     for (var i = position.x - 1; i <= position.x + 1; i++) {
       if ((i < outerbounds.x) && (i >= 0)) {
@@ -44,15 +42,9 @@ class Mine extends CellBase {
     while (_isOccupied(throughoutField, mineDestination)) {
       mineDestination = _newRandomPosition(random, outerBounds);
     }
+
     return Mine(mineDestination.x, mineDestination.y, inField: throughoutField);
   }
-
-  static Position _newRandomPosition(Random random, Position outerBounds) =>
-      Position(random.nextInt(outerBounds.x), random.nextInt(outerBounds.y));
-
-  static bool _isOccupied(
-          List<List<CellBase?>> throughoutField, Position mineDestination) =>
-      throughoutField[mineDestination.y][mineDestination.x] != null;
 
   @override
   void increment() {
@@ -65,6 +57,15 @@ class Mine extends CellBase {
     // TODO: boom!!!
     _isCovered = false;
   }
+
+  static Position _newRandomPosition(Random random, Position outerBounds) =>
+      Position(random.nextInt(outerBounds.x), random.nextInt(outerBounds.y));
+
+  static bool _isOccupied(
+    List<List<CellBase?>> throughoutField,
+    Position mineDestination,
+  ) =>
+      throughoutField[mineDestination.y][mineDestination.x] != null;
 }
 
 class NumberedCell extends CellBase {
@@ -102,11 +103,31 @@ class EmptyCell extends CellBase {
 
 Position _determineOuterbounds(List<List<CellBase?>> throughoutField) {
   _assertMinefieldSuitability(throughoutField);
-  return Position(throughoutField[0].length, throughoutField.length);
+
+  return Position(throughoutField.first.length, throughoutField.length);
 }
 
 void _assertMinefieldSuitability(List<List<CellBase?>> throughoutField) {
   assert(isRectangular(throughoutField), "field is not rectangular");
   assert(
       1 <= countEmptyCellsinMatrix(throughoutField), "not enough empty cells");
+}
+
+int countEmptyCellsinMatrix<T>(List<List<T?>> matrix) {
+  var emptySpace = 0;
+  for (var row in matrix) {
+    emptySpace += row.where((element) => element == null).length;
+  }
+
+  return emptySpace;
+}
+
+bool isRectangular<T>(List<List<T>> listOfLists) {
+  for (int i = 1; i < listOfLists.length; i++) {
+    if (listOfLists[i].length != listOfLists[i - 1].length) {
+      return false;
+    }
+  }
+
+  return true;
 }

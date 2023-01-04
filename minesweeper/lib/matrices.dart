@@ -1,11 +1,8 @@
 typedef Matrix<T> = List<List<T>>;
 
 Matrix<T?> createMatrix<T>(int matrixSize) {
-  Matrix<T?> matrix = [
+  return [
     for (var i = 0; i < matrixSize; i++)
-      [
-        for (var i = 0; i < matrixSize; i++) null,
-      ],
+      [for (var i = 0; i < matrixSize; i++) null],
   ];
-  return matrix;
 }
