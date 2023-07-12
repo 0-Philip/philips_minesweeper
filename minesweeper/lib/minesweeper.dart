@@ -36,12 +36,12 @@ class Minesweeper {
 
   void placeNumberAccordingly(int x, int y) {
     if (minefield[y][x] is NumberedCell) minefield[y][x]?.increment();
-    minefield[y][x] ??= NumberedCell(x, y, inField: minefield);
+    minefield[y][x] ??= NumberedCell((x: x, y: y), inField: minefield);
   }
 
   void populateEmptyCells() {
     forEachInMatrix(minefield, (x, y) {
-      minefield[y][x] ??= EmptyCell(x, y, inField: minefield);
+      minefield[y][x] ??= EmptyCell((x: x, y: y), inField: minefield);
     });
   }
 

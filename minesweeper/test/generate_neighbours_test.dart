@@ -5,9 +5,9 @@ import 'package:minesweeper/matrices.dart';
 
 var minefield = createMatrix<CellBase>(4);
 var mines = [
-  Mine(2, 1, inField: minefield),
-  Mine(1, 3, inField: minefield),
-  Mine(3, 3, inField: minefield),
+  Mine((x: 2, y: 1), inField: minefield),
+  Mine((x: 1, y: 3), inField: minefield),
+  Mine((x: 3, y: 3), inField: minefield),
 ];
 
 var xOuterBound = 4;
