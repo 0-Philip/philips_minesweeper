@@ -8,7 +8,6 @@ void main() {
   test("minecount correct", () {
     var minesweeper = Minesweeper(fieldSize: 9, mineCount: 10);
     minesweeper.initialize();
-
     expect(
       minesweeper.minefield
           .map((row) => row.countType<Mine>())
