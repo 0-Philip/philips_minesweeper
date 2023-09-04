@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:minesweeper/matrices.dart';
 
 class Minesweeper {
-  Matrix<CellBase?> minefield;
+  Matrix<CellBase?> minefield; //TODO make minefield non nullable
   List<Mine> mines;
   final int xOuterBound;
   final int yOuterBound;
@@ -20,12 +20,14 @@ class Minesweeper {
 
   Minesweeper._(int fieldSize, this.minefield, this.mines)
       : xOuterBound = fieldSize,
-        yOuterBound = fieldSize;
+        yOuterBound = fieldSize {
+    initialize();
+  }
 
   void initialize() {
     addNeighbours();
     populateEmptyCells();
-    printMineswithDebug();
+    // printMineswithDebug();
   }
 
   void addNeighbours() {
@@ -73,5 +75,22 @@ void forEachInMatrix<T>(
     for (int j = 0; j < (matrix[i].length); j++) {
       function(i, j);
     }
+  }
+}
+
+void prettyPrintMinefield(Minesweeper minesweeper) {
+  for (var row in minesweeper.minefield) {
+    for (var cell in row) {
+      stdout.write(
+        switch (cell) {
+          var cell when cell?.isCovered == true => '█',
+          EmptyCell() => '░',
+          NumberedCell() => '${cell.adjacentMineCount}',
+          Mine() => '⚙',
+          null => '␀',
+        },
+      );
+    }
+    stdout.writeln('');
   }
 }
