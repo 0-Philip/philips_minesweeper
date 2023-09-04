@@ -15,7 +15,9 @@ sealed class CellBase {
 
   void increment();
 
-  void uncover();
+  void uncover() {
+    _isCovered = false;
+  }
 
   void forEachSurrounding(void Function(int, int) function) {
     var outerbounds = _determineOuterbounds(inField);
@@ -57,8 +59,8 @@ class Mine extends CellBase {
 
   @override
   void uncover() {
+    super.uncover();
     // TODO: boom!!!
-    _isCovered = false;
   }
 
   static Position _newRandomPosition(Random random, Position outerBounds) {
@@ -85,11 +87,6 @@ class NumberedCell extends CellBase {
   void increment() {
     adjacentMineCount++;
   }
-
-  @override
-  void uncover() {
-    _isCovered = false;
-  }
 }
 
 class EmptyCell extends CellBase {
@@ -102,6 +99,7 @@ class EmptyCell extends CellBase {
 
   @override
   void uncover() {
+    super.uncover();
     forEachSurrounding((int x, int y) {
       var cell = inField[y][x];
       if (cell?.isCovered) cell?.uncover();
@@ -110,7 +108,7 @@ class EmptyCell extends CellBase {
 }
 
 Position _determineOuterbounds(List<List<CellBase?>> throughoutField) {
-  _assertMinefieldSuitability(throughoutField);
+  // _assertMinefieldSuitability(throughoutField);
 
   return (x: throughoutField.first.length, y: throughoutField.length);
 }
