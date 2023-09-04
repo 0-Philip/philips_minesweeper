@@ -46,8 +46,10 @@ class Mine extends CellBase {
       mineDestination = _newRandomPosition(random, outerBounds);
     }
 
-    return Mine((x: mineDestination.x, y: mineDestination.y),
-        inField: throughoutField);
+    return Mine(
+      (x: mineDestination.x, y: mineDestination.y),
+      inField: throughoutField,
+    );
   }
 
   @override
